@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="buttons">
+    <button class="button is-primary is-large modal-button" data-target="modal-ticket">Crear historia</button>
+</div>
+    <div class="modal" id="modal-ticket">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">
+                Agregar historia
+            </p>
+            <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="box">
+                <form method="POST" action="/registrar_tick">
+                    <div class="field">
+                        <div class="control">
+                            <textarea class="textarea" placeholder="Descripción de la historia"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                    <label class="label" for="empresa">Proyecto:</label>
+                    <div class="select">  
+                        <select name="empresa" id="empresa">
+                            {% for empresa in Empresas  %}
+                                <option value="{{empresa.Nit}}">{{empresa.Nombre}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock %}
