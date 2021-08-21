@@ -21,7 +21,7 @@ def entrar():
             flash('Por favor verifique las credenciales de acceso e intente ingresar de nuevo')
             return redirect(url_for('auth.entrar'))
         login_user(user, remember=remember)
-        return redirect(url_for('main.perfil'))
+        return redirect(url_for('main.proyectos'))
     else:
         return render_template('entrar.html')
 

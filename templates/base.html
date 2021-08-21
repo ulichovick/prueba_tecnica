@@ -10,58 +10,69 @@
 </head>
 
 <body>
-    <section class="hero is-small is-info">
-        <div class="hero-head">
-            <nav class="navbar">
-                <div class="container">
-                    <div class="navbar-brand">
+    <div class="hero-head">
+        <nav class="navbar is-info">
+            <div class="container">
+                <div class="navbar-brand">
+                    {% if current_user.is_authenticated %}
+                        <div class="navbar-item"> 
+                            Sesión iniciada como {{current_user.Nombre}}
+                        </div>
+                    {% endif %}
+                    <a role="button" class="navbar-burger" data-target="navbarMenu" aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        </a>
+                    </div>
+                <div id="navbarMenu" class="navbar-menu is-info">
+                    <div class="navbar-end">
                         {% if current_user.is_authenticated %}
-                            <div class="navbar-item"> 
-                                Hola {{current_user.Nombre}}
-                            </div>
-                        {% endif %}
-                        <a role="button" class="navbar-burger" data-target="navbarMenu" aria-label="menu" aria-expanded="false">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
+                            <a href="{{ url_for('main.index') }}" class="navbar-item">
+                                Tickets
                             </a>
-                        </div>
-                    <div id="navbarMenu" class="navbar-menu">
-                        <div class="navbar-end">
-                                <a href="{{ url_for('main.index') }}" class="navbar-item">
-                                    Inicio
-                                </a>
-                                {% if current_user.is_authenticated %}
-                                <a href="{{ url_for('main.perfil') }}" class="navbar-item">
-                                    Perfil
-                                </a>
-                            {% endif %}
-                            {% if not current_user.is_authenticated %}
-                                <a href="{{ url_for('auth.entrar') }}" class="navbar-item">
-                                    Entrar
-                                </a>
-                                <a href="{{ url_for('auth.registrarse') }}" class="navbar-item">
-                                    Registrarse
-                                </a>
-                            {% endif %}
-                            {% if current_user.is_authenticated %}
-                                <a href="{{ url_for('auth.salir') }}" class="navbar-item">
-                                    Salir
-                                </a>
-                            {% endif %}
-                        </div>
+                            <a href="{{ url_for('main.historias') }}" class="navbar-item">
+                                Historias
+                            </a>
+                            <a href="{{ url_for('main.proyectos') }}" class="navbar-item">
+                                Proyectos
+                            </a>
+
+                        {% endif %}
+                        {% if current_user.is_authenticated and current_user.Nombre == "Admin"  %}
+                            <a href="{{ url_for('main.registrar_emp') }}" class="navbar-item">
+                                Registrar empresa
+                            </a>
+                        {% endif %}
+                        {% if current_user.is_authenticated and current_user.Nombre == "Admin"  %}
+                            <a href="{{ url_for('main.crear_proyecto') }}" class="navbar-item">
+                                Crear proyecto
+                            </a>
+                        {% endif %}
+                        {% if not current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.entrar') }}" class="navbar-item">
+                                Entrar
+                            </a>
+                            <a href="{{ url_for('auth.registrarse') }}" class="navbar-item">
+                                Registrarse
+                            </a>
+                        {% endif %}
+                        {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.salir') }}" class="navbar-item">
+                                Salir
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
-            </nav>
-        </div>
-
-    </section>
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                {% block content %}
-                {% endblock %}
             </div>
+        </nav>
+    </div>
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            {% block content %}
+            {% endblock %}
         </div>
+    </div>
     <script src="{{ url_for('static', filename='/js/main.js') }}"></script>
 </body>
 

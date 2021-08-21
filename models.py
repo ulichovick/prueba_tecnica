@@ -29,7 +29,7 @@ class Proyecto(UserMixin, bd.Model):
 class Historia(UserMixin, bd.Model):
     __tablename__ = 'Historias'
     Id = bd.Column(bd.Integer, primary_key=True)
-    Descr = bd.Column(bd.String(50))
+    Descr = bd.Column(bd.String(500))
     Id_Proyecto = bd.Column(bd.Integer, bd.ForeignKey('Proyectos.Id'), nullable=False)
     Id_Usuario = bd.Column(bd.Integer,bd.ForeignKey('Usuarios.Cc'), nullable=False)
 
@@ -37,5 +37,6 @@ class Historia(UserMixin, bd.Model):
 class Tickets(UserMixin, bd.Model):
     __tablename__ = 'Tickets'
     Id = bd.Column(bd.Integer, primary_key=True)
-    Descr = bd.Column(bd.String(50))
+    Descr = bd.Column(bd.String(500))
+    Estado = bd.Column(bd.String(15), nullable=False)
     Id_Historia = bd.Column(bd.Integer, bd.ForeignKey('Historias.Id'), nullable=False)

@@ -1,39 +1,197 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="buttons">
-    <button class="button is-primary is-large modal-button" data-target="modal-ticket">Crear historia</button>
-</div>
+<h1 class="title">
+    Tickets
+</h1>
+<div class="container">
+    <div class="buttons">
+        <button class="button is-primary is-large modal-button" data-target="modal-ticket">Crear Ticket</button>
+    </div>
     <div class="modal" id="modal-ticket">
         <div class="modal-background"></div>
         <div class="modal-card">
         <header class="modal-card-head">
             <p class="modal-card-title">
-                Agregar historia
+                Agregar ticket
             </p>
             <button class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
             <div class="box">
-                <form method="POST" action="/registrar_tick">
+                <form method="POST" action="/">
                     <div class="field">
                         <div class="control">
-                            <textarea class="textarea" placeholder="Descripción de la historia"></textarea>
+                            <textarea class="textarea" id="descripcion" name="descripcion" placeholder="Descripción del ticket"></textarea>
                         </div>
                     </div>
-
                     <div class="field">
-                    <label class="label" for="empresa">Proyecto:</label>
-                    <div class="select">  
-                        <select name="empresa" id="empresa">
-                            {% for empresa in Empresas  %}
-                                <option value="{{empresa.Nit}}">{{empresa.Nombre}}</option>
-                            {% endfor %}
-                        </select>
+                        <label class="label" for="estado">estado:</label>
+                        <div class="select">  
+                            <select name="estado" id="estado">
+                                    <option value="Activo">Activo</option>
+                                    <option value="En proceso">En proceso</option>
+                                    <option value="Finalizado">Finalizado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                    <div class="field">
+                        <label class="label" for="historia">Historia:</label>
+                        <div class="select">  
+                            <select name="historia" id="historia">
+                                {% for historia in historias %}
+                                    <option value="{{historia.Id}}">{{historia.Descr}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <button class="button is-block is-info is-large is-fullwidth" id="crear_tick" name="crear_tick">Crear ticket</button>
                 </form>
             </div>
         </section>
     </div>
+</div>
+<div class="container">
+    {% for ticket in tickets %}
+        {% if ticket.Estado == "Activo" %}
+            <article class="message is-warning">
+                <div class="message-header">
+                    <p>Estado: {{ticket.Estado}}</p>
+                </div>
+                <div class="message-body">
+                    <p>{{ticket.Descr}}</p>
+                        <div class="container">
+                            <div class="buttons is-centered">
+                                <button class="button is-warning is-centered modal-button" id="abre_editar" name="abre_editar" data-target="modal-editar-ticket">Editar ticket</button>
+                                <form action="/" method="POST"><button class="button is-danger is-centered" id="cancelar_ticket" name="cancelar_ticket">Cancelar</button>
+                                <input type="hidden" name="tick_id" value="{{ticket.Id}}">
+                                </form>
+                            </div>
+                            <div class="modal" id="modal-editar-ticket">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">
+                                        Editar ticket
+                                    </p>
+                                    <button class="delete" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="box">
+                                        <form method="POST" action="/">
+                                            <div class="field">
+                                                <div class="control">
+                                                    <input type="hidden" name="tick_id" value="{{ticket.Id}}">
+                                                    <textarea class="textarea" id="descripcion" name="nueva_descripcion" placeholder="Descripción de la historia">{{ticket.Descr}}</textarea>
+
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="estado">estado:</label>
+                                                <div class="select">  
+                                                    <select name="nuevo_estado" id="estado">
+                                                            <option value="Activo">Activo</option>
+                                                            <option value="En proceso">En proceso</option>
+                                                            <option value="Finalizado">Finalizado</option>
+                                                            <option value="Cancelado">Cancelado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="historia">Historia:</label>
+                                                <div class="select">  
+                                                    <select name="nueva_historia" id="historia">
+                                                        {% for historia in historias %}
+                                                            <option value="{{historia.Id}}">{{historia.Descr}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="button is-block is-info is-large is-fullwidth" id="editar_ticket" name="editar_ticket">Editar ticket</button>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                </div>
+            </article>
+        {% elif ticket.Estado == "En proceso" %}
+            <article class="message is-info">
+                <div class="message-header">
+                    <p>Estado: {{ticket.Estado}}</p>
+                </div>
+                <div class="message-body">
+                    <p>{{ticket.Descr}}</p>
+                    <button class="button is-info is-centered modal-button" id="abre_editar" name="abre_editar" data-target="modal-editar-ticket-proceso">Editar ticket</button>
+                    <div class="modal" id="modal-editar-ticket-proceso">
+                                <div class="modal-background"></div>
+                                <div class="modal-card">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">
+                                        Editar ticket
+                                    </p>
+                                    <button class="delete" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="box">
+                                        <form method="POST" action="/">
+                                            <div class="field">
+                                                <div class="control">
+                                                    <input type="hidden" name="tick_id" value="{{ticket.Id}}">
+                                                    <textarea class="textarea" id="descripcion" name="nueva_descripcion" placeholder="Descripción de la historia">{{ticket.Descr}}</textarea>
+
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="estado">estado:</label>
+                                                <div class="select">  
+                                                    <select name="nuevo_estado" id="estado">
+                                                            <option value="Activo">Activo</option>
+                                                            <option value="En proceso">En proceso</option>
+                                                            <option value="Finalizado">Finalizado</option>
+                                                            <option value="Cancelado">Cancelado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="historia">Historia:</label>
+                                                <div class="select">  
+                                                    <select name="nueva_historia" id="historia">
+                                                        {% for historia in historias %}
+                                                            <option value="{{historia.Id}}">{{historia.Descr}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <button class="button is-block is-info is-large is-fullwidth" id="editar_ticket" name="editar_ticket">Editar ticket</button>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                </div>
+            </article>
+        {% elif ticket.Estado == "Finalizado" %}
+            <article class="message is-success">
+                <div class="message-header">
+                    <p>Estado: {{ticket.Estado}}</p>
+                </div>
+                <div class="message-body">
+                    <p>{{ticket.Descr}}</p>
+                </div>
+            </article>
+        {% elif ticket.Estado == "Cancelado" %}
+            <article class="message is-danger">
+                <div class="message-header">
+                    <p>Estado: {{ticket.Estado}}</p>
+                </div>
+                <div class="message-body">
+                    <p>{{ticket.Descr}}</p>
+                </div>
+            </article>
+        {% endif %}
+    {% endfor %}
+</div>
 {% endblock %}

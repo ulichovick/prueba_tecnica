@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+    Historias
+</h1>
+<div class="container">
+    <div class="buttons">
+        <button class="button is-primary is-large modal-button" data-target="modal-ticket">Crear historia</button>
+    </div>
+        <div class="modal" id="modal-ticket">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">
+                    Agregar historia
+                </p>
+                <button class="delete" aria-label="close"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="box">
+                    <form method="POST" action="/historias">
+                        <div class="field">
+                            <div class="control">
+                                <textarea class="textarea" name="descr" id="descr" placeholder="Descripción de la historia"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                        <label class="label" for="proyecto">Proyecto:</label>
+                        <div class="select">  
+                            <select name="proyecto" id="proyecto">
+                                {% for proyecto in proyectos  %}
+                                    <option value="{{proyecto.Id}}">{{proyecto.Nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        </div>
+                        <p class="title">Agregar ticket</p>
+                        <div class="field">
+                        <div class="control">
+                            <textarea class="textarea" id="descripcion" name="descripcion_ticket" placeholder="Descripción del ticket"></textarea>
+                        </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="estado">estado:</label>
+                            <div class="select">  
+                                <select name="estado_ticket" id="estado">
+                                        <option value="Activo">Activo</option>
+                                        <option value="En proceso">En proceso</option>
+                                        <option value="Finalizado">Finalizado</option>
+                                        <option value="Cancelado">Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="button is-block is-info is-large is-fullwidth">Crear historia</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+</div>
+<div class="container">
+    {% for historia in historias %}
+        <article class="message is-info">
+            <div class="message-header">
+                <p>{{historia.Descr}}</p>
+            </div>
+            <div class="message-body">
+                {% for ticket in tickets %}
+                    {% if ticket.Id_Historia == historia.Id %}
+                        {% if ticket.Estado == "Activo" %}
+                            <article class="message is-warning">
+                                <div class="message-body">
+                                    <p>{{ticket.Descr}}</p>    
+                                </div>
+                            </article>
+
+                        {% elif ticket.Estado == "En proceso" %}
+                            <article class="message is-info">
+                                <div class="message-body">
+                                    <p>{{ticket.Descr}}</p>    
+                                </div>
+                            </article>
+
+                        {% elif ticket.Estado == "Finalizado" %}
+                            <article class="message is-success">
+                                <div class="message-body">
+                                    <p>{{ticket.Descr}}</p>    
+                                </div>
+                            </article>
+
+                        {% elif ticket.Estado == "Cancelado" %}
+                            <article class="message is-danger">
+                                <div class="message-body">
+                                    <p>{{ticket.Descr}}</p>    
+                                </div>
+                            </article>
+                        {% endif %}  
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </article>
+    {% endfor %}
+</div>
+{% endblock %}
