@@ -14,3 +14,5 @@ se crearon dos usuarios de prueba:
   
 el usuario "Admin" puede crear proyectos y registrar empresas
 el usuario prueba es un usuario standard.
+
+para iniciar el servidor de desarrollo flask basta con ejecutar el script flask_init (entornos linux)
