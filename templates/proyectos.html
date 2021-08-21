@@ -7,33 +7,6 @@
     {% endfor %}
 </h1>
 <div class="container">
-<div class="buttons">
-    <button class="button is-primary is-large modal-button" data-target="modal-ticket">Crear proyecto</button>
-</div>
-    <div class="modal" id="modal-ticket">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">
-                Agregar proyecto
-            </p>
-            <button class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-            <div class="box">
-                <form method="POST" action="/registrar_tick">
-                    <div class="field">
-                        <div class="control">
-                            <textarea class="textarea" placeholder="Descripción de la historia"></textarea>
-                        </div>
-                    </div>
-                    <button class="button is-block is-info is-large is-fullwidth">Crear proyecto</button>
-                </form>
-            </div>
-        </section>
-    </div>
-</div>
-<div class="container">
     {% for proyecto in proyectos %}
         <article class="message is-info" name={{proyecto.Id}}>
             <div class="message-header">
